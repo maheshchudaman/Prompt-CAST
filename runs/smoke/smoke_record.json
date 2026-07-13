@@ -1,0 +1,7 @@
+{
+  "checkpoint_sha256": "0a7ff16b4c1c622bb51e3fe0349dc68d6b23d307abe65ea5dac9a91ae8dcb270",
+  "known_pixels_preserved": true,
+  "loss": 0.6593960523605347,
+  "reload_max_abs_error": 0.0,
+  "status": "pass"
+}
