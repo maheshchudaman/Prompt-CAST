@@ -1,1 +1,41 @@
 figure,panel,dataset,image_id,mask_id,method,run_id,checkpoint_sha256,output_path
+Fig. 6,Input (corrupted),personal/out-of-dataset,not_archived,not_archived,n/a,not_archived,not_archived,not_archived
+Fig. 6,Mask,personal/out-of-dataset,not_archived,not_archived,n/a,not_archived,not_archived,not_archived
+Fig. 6,-CSAM (texture drift),personal/out-of-dataset,not_archived,not_archived,CAST-Net (-CSAM),not_archived,not_archived,not_archived
+Fig. 6,-FARR (soft edges),personal/out-of-dataset,not_archived,not_archived,CAST-Net (-FARR),not_archived,not_archived,not_archived
+Fig. 6,-SGC (artifacts in large holes),personal/out-of-dataset,not_archived,not_archived,CAST-Net (-SGC),not_archived,not_archived,not_archived
+Fig. 6,Full (SGC+CSAM+FARR),personal/out-of-dataset,not_archived,not_archived,CAST-Net (full),not_archived,not_archived,not_archived
+Fig. 6,Ground Truth,personal/out-of-dataset,not_archived,not_archived,n/a,not_archived,not_archived,not_archived
+Fig. 6,Full (zoom),personal/out-of-dataset,not_archived,not_archived,CAST-Net (full),not_archived,not_archived,not_archived
+Fig. 7,Input (corrupted),personal/out-of-dataset,not_archived,not_archived,n/a,not_archived,not_archived,not_archived
+Fig. 7,Mask,personal/out-of-dataset,not_archived,not_archived,n/a,not_archived,not_archived,not_archived
+Fig. 7,DeepFill v2,personal/out-of-dataset,not_archived,not_archived,DeepFill v2,not_archived,not_archived,not_archived
+Fig. 7,EdgeConnect,personal/out-of-dataset,not_archived,not_archived,EdgeConnect,not_archived,not_archived,not_archived
+Fig. 7,RFR-Inpainting,personal/out-of-dataset,not_archived,not_archived,RFR-Inpainting,not_archived,not_archived,not_archived
+Fig. 7,CoMod-GAN,personal/out-of-dataset,not_archived,not_archived,CoModGAN,not_archived,not_archived,not_archived
+Fig. 7,CAST-Net (ours),personal/out-of-dataset,not_archived,not_archived,CAST-Net (full),not_archived,not_archived,not_archived
+Fig. 7,Ground Truth,personal/out-of-dataset,not_archived,not_archived,n/a,not_archived,not_archived,not_archived
+Fig. 8,Input,personal/out-of-dataset,not_archived,not_archived,n/a,not_archived,not_archived,not_archived
+Fig. 8,Mask,personal/out-of-dataset,not_archived,not_archived,n/a,not_archived,not_archived,not_archived
+Fig. 8,DeepFill v2,personal/out-of-dataset,not_archived,not_archived,DeepFill v2,not_archived,not_archived,not_archived
+Fig. 8,EdgeConnect,personal/out-of-dataset,not_archived,not_archived,EdgeConnect,not_archived,not_archived,not_archived
+Fig. 8,RFR-Inpainting,personal/out-of-dataset,not_archived,not_archived,RFR-Inpainting,not_archived,not_archived,not_archived
+Fig. 8,CoMod-GAN,personal/out-of-dataset,not_archived,not_archived,CoModGAN,not_archived,not_archived,not_archived
+Fig. 8,CAST-Net (ours),personal/out-of-dataset,not_archived,not_archived,CAST-Net (full),not_archived,not_archived,not_archived
+Fig. 8,Ground Truth,personal/out-of-dataset,not_archived,not_archived,n/a,not_archived,not_archived,not_archived
+Fig. 9(a),Input (edge),personal/out-of-dataset,not_archived,not_archived,n/a,not_archived,not_archived,not_archived
+Fig. 9(a),Ground Truth (edge),personal/out-of-dataset,not_archived,not_archived,n/a,not_archived,not_archived,not_archived
+Fig. 9(a),DeepFill v2 (error),personal/out-of-dataset,not_archived,not_archived,DeepFill v2,not_archived,not_archived,not_archived
+Fig. 9(a),EdgeConnect (error),personal/out-of-dataset,not_archived,not_archived,EdgeConnect,not_archived,not_archived,not_archived
+Fig. 9(a),RFR-Inpainting (error),personal/out-of-dataset,not_archived,not_archived,RFR-Inpainting,not_archived,not_archived,not_archived
+Fig. 9(a),CoMod-GAN (error),personal/out-of-dataset,not_archived,not_archived,CoModGAN,not_archived,not_archived,not_archived
+Fig. 9(a),CAST-Net (error),personal/out-of-dataset,not_archived,not_archived,CAST-Net (full),not_archived,not_archived,not_archived
+Fig. 9(a),Mask,personal/out-of-dataset,not_archived,not_archived,n/a,not_archived,not_archived,not_archived
+Fig. 9(b),GT (edge),personal/out-of-dataset,not_archived,not_archived,n/a,not_archived,not_archived,not_archived
+Fig. 9(b),Mask,personal/out-of-dataset,not_archived,not_archived,n/a,not_archived,not_archived,not_archived
+Fig. 9(b),DeepFill v2 (masked error),personal/out-of-dataset,not_archived,not_archived,DeepFill v2,not_archived,not_archived,not_archived
+Fig. 9(b),EdgeConnect (masked error),personal/out-of-dataset,not_archived,not_archived,EdgeConnect,not_archived,not_archived,not_archived
+Fig. 9(b),RFR-Inpainting (masked error),personal/out-of-dataset,not_archived,not_archived,RFR-Inpainting,not_archived,not_archived,not_archived
+Fig. 9(b),CoMod-GAN (masked error),personal/out-of-dataset,not_archived,not_archived,CoModGAN,not_archived,not_archived,not_archived
+Fig. 9(b),CAST-Net (masked error),personal/out-of-dataset,not_archived,not_archived,CAST-Net (full),not_archived,not_archived,not_archived
+Fig. 9(b),Error scale (low->high),personal/out-of-dataset,not_archived,not_archived,n/a,not_archived,not_archived,not_archived
