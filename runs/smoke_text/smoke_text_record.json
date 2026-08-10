@@ -1,0 +1,10 @@
+{
+  "checkpoint_sha256": "1f2a5e84a13fdb2c77154f6b08c379fee443b2f9f0401b5017f1be3cba4c2798",
+  "film_head_received_nonzero_gradient": true,
+  "known_pixels_preserved": true,
+  "loss": 0.6586064100265503,
+  "note": "synthetic prompt embedding (random vector), not a real CLIP output; verifies the training loop and FiLM path mechanically, not inpainting quality",
+  "output_changed_after_one_step": true,
+  "reload_max_abs_error": 0.0,
+  "status": "pass"
+}
