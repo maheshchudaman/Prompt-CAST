@@ -16,6 +16,7 @@ class CASTNetConfig:
     retain_ratio: float = 0.10
     csam_temperature: float = 0.07
     residual_scale: float = 0.25
+    text_dim: int = None  # set to enable text-conditioned CSAM (e.g. 512 for CLIP ViT-B-32)
 
 
 class CASTNet(nn.Module):
@@ -33,14 +34,14 @@ class CASTNet(nn.Module):
         self.enc2 = nn.Sequential(ConvBlock(b, b * 2, 4, 2), ResidualBlock(b * 2))
         self.enc3 = nn.Sequential(ConvBlock(b * 2, b * 4, 4, 2), ResidualBlock(b * 4))
         self.sgc = SparseGlobalContext(b * 4, config.attention_heads, config.retain_ratio)
-        self.csam = CrossScaleAffinityMixer(b * 2, b * 4, config.csam_temperature)
+        self.csam = CrossScaleAffinityMixer(b * 2, b * 4, config.csam_temperature, text_dim=config.text_dim)
         self.fusion = nn.Sequential(ConvBlock(b * 8, b * 4, 1), ResidualBlock(b * 4))
         self.up2 = UpBlock(b * 4, b * 2, b * 2)
         self.up1 = UpBlock(b * 2, b, b)
         self.coarse_head = nn.Sequential(ConvBlock(b, b // 2), nn.Conv2d(b // 2, 3, 3, padding=1), nn.Tanh())
         self.farr = FrequencyAwareResidualRefinement(b, b, config.residual_scale)
 
-    def forward(self, corrupted, valid_mask, return_diagnostics=False):
+    def forward(self, corrupted, valid_mask, text_embedding=None, return_diagnostics=False):
         if corrupted.ndim != 4 or valid_mask.ndim != 4:
             raise ValueError("corrupted and valid_mask must be BCHW tensors")
         if valid_mask.shape[1] != 1 or corrupted.shape[1] != 3:
@@ -51,10 +52,10 @@ class CASTNet(nn.Module):
         e3 = self.enc3(e2)
         if return_diagnostics:
             global_feature, sgc_diag = self.sgc(e3, True)
-            local_feature, csam_diag = self.csam(e3, e2, valid_mask, True)
+            local_feature, csam_diag = self.csam(e3, e2, valid_mask, text_embedding, True)
         else:
             global_feature = self.sgc(e3)
-            local_feature = self.csam(e3, e2, valid_mask)
+            local_feature = self.csam(e3, e2, valid_mask, text_embedding)
         fused = self.fusion(torch.cat([global_feature, local_feature], dim=1))
         d2 = self.up2(fused, e2)
         d1 = self.up1(d2, e1)
