@@ -9,7 +9,7 @@ class FrozenTextEncoder(nn.Module):
     this module if text-conditioned inpainting is actually used.
     """
 
-    def __init__(self, model_name="ViT-B-32", pretrained="openai", device="cpu"):
+    def __init__(self, model_name="ViT-B-32-quickgelu", pretrained="openai", device="cpu"):
         super().__init__()
         try:
             import open_clip
