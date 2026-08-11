@@ -1,6 +1,6 @@
 cff-version: 1.2.0
-title: "CAST-Net: Context-Aware Sparse-Transformer GAN for Image Inpainting"
-message: "Cite the paper and the exact archived software release used for experiments."
+title: "Prompt-CAST: Text-Conditioned Image Inpainting with a Frozen Vision-Language Prior"
+message: "Cite the paper and the exact archived software release used for experiments. This project extends CAST-Net (https://github.com/maheshchudaman/CAST-Net); cite that repository too if you use the unconditional SGC/FARR components."
 type: software
 authors:
   - family-names: Patil
@@ -8,5 +8,5 @@ authors:
   - family-names: Tiwari
     given-names: Vikas
 version: 0.1.0
-date-released: 2026-07-13
+date-released: 2026-08-10
 license: MIT
