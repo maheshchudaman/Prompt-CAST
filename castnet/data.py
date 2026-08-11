@@ -24,10 +24,24 @@ def free_form_validity_mask(size, seed, min_strokes=4, max_strokes=12):
 
 
 class ManifestDataset(Dataset):
-    def __init__(self, manifest, image_size=256, mask_seed=2026):
+    """valid_mask semantics: 1=observed, 0=missing (see configs/*.yaml).
+
+    If require_prompt is True, every manifest record must carry a "prompt"
+    field (free text, e.g. an ADE20K scene category) and each sample includes
+    it under the "prompt" key. If False (the default), behaviour is
+    unchanged from before text conditioning existed - "prompt" is simply
+    absent from the returned dict.
+    """
+
+    def __init__(self, manifest, image_size=256, mask_seed=2026, require_prompt=False):
         self.records = [json.loads(line) for line in Path(manifest).read_text(encoding="utf-8").splitlines() if line.strip()]
         self.image_size = image_size
         self.mask_seed = mask_seed
+        self.require_prompt = require_prompt
+        if require_prompt:
+            missing = [r.get("id", str(i)) for i, r in enumerate(self.records) if not r.get("prompt")]
+            if missing:
+                raise ValueError(f"require_prompt=True but {len(missing)} record(s) have no prompt, e.g. {missing[:5]}")
 
     def __len__(self):
         return len(self.records)
@@ -38,4 +52,7 @@ class ManifestDataset(Dataset):
         target = TF.pil_to_tensor(image).float() / 127.5 - 1.0
         valid = free_form_validity_mask(self.image_size, self.mask_seed + index)
         corrupted = target * valid
-        return {"target": target, "corrupted": corrupted, "valid_mask": valid, "image_id": record.get("id", str(index))}
+        sample = {"target": target, "corrupted": corrupted, "valid_mask": valid, "image_id": record.get("id", str(index))}
+        if self.require_prompt:
+            sample["prompt"] = record["prompt"]
+        return sample
