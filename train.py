@@ -13,6 +13,14 @@ from castnet.model import CASTNet
 from castnet.reproducibility import environment_record, git_revision, seed_everything, sha256, write_json
 
 
+def select_device():
+    if torch.cuda.is_available():
+        return torch.device("cuda")
+    if torch.backends.mps.is_available():
+        return torch.device("mps")
+    return torch.device("cpu")
+
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--config", required=True)
@@ -20,14 +28,28 @@ def main():
     args = parser.parse_args()
     config = load_yaml(args.config)
     seed_everything(config["seed"])
-    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    device = select_device()
     run_dir = Path("runs") / config["experiment"]
     run_dir.mkdir(parents=True, exist_ok=True)
     snapshot = run_dir / "config.yaml"
     snapshot.write_text(Path(args.config).read_text(encoding="utf-8"), encoding="utf-8")
-    write_json(run_dir / "run_metadata.json", {"git_commit": git_revision(), "config_sha256": sha256(snapshot), "environment": environment_record(), "seed": config["seed"], "status": "started"})
+    write_json(run_dir / "run_metadata.json", {"git_commit": git_revision(), "config_sha256": sha256(snapshot), "environment": environment_record(), "seed": config["seed"], "status": "started", "device": device.type})
 
-    dataset = ManifestDataset(config["data"]["train_manifest"], config["data"]["image_size"], config["data"]["mask_seed"])
+    text_dim = config["model"].get("text_dim")
+    text_encoder = None
+    if text_dim is not None:
+        from castnet.text_encoder import FrozenTextEncoder
+
+        text_encoder = FrozenTextEncoder(device=device)
+        if text_encoder.output_dim != text_dim:
+            raise ValueError(f"config text_dim={text_dim} does not match text encoder output_dim={text_encoder.output_dim}")
+
+    dataset = ManifestDataset(
+        config["data"]["train_manifest"],
+        config["data"]["image_size"],
+        config["data"]["mask_seed"],
+        require_prompt=text_dim is not None,
+    )
     loader = DataLoader(dataset, batch_size=config["training"]["batch_size"], shuffle=True, num_workers=0)
     model = CASTNet(model_config(config)).to(device)
     discriminator = PatchDiscriminator(config["model"]["base_channels"]).to(device)
@@ -41,7 +63,8 @@ def main():
                 target = batch["target"].to(device)
                 corrupted = batch["corrupted"].to(device)
                 valid = batch["valid_mask"].to(device)
-                output = model(corrupted, valid)
+                text_embedding = text_encoder(batch["prompt"]).to(device) if text_encoder is not None else None
+                output = model(corrupted, valid, text_embedding=text_embedding)
                 optimizer_d.zero_grad(set_to_none=True)
                 loss_d = discriminator_hinge(discriminator(target, valid), discriminator(output["completed"].detach(), valid))
                 loss_d.backward()
