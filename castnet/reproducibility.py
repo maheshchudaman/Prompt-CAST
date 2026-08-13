@@ -35,6 +35,22 @@ def git_revision(root="."):
         return "unavailable"
 
 
+def _mps_device_name():
+    try:
+        name = subprocess.check_output(["sysctl", "-n", "machdep.cpu.brand_string"], text=True, stderr=subprocess.DEVNULL).strip()
+        return f"Apple MPS ({name})" if name else "Apple MPS"
+    except (OSError, subprocess.CalledProcessError):
+        return "Apple MPS"
+
+
+def _gpu_name():
+    if torch.cuda.is_available():
+        return torch.cuda.get_device_name(0)
+    if torch.backends.mps.is_available():
+        return _mps_device_name()
+    return "cpu"
+
+
 def environment_record():
     return {
         "python": platform.python_version(),
@@ -42,7 +58,7 @@ def environment_record():
         "torch": torch.__version__,
         "cuda": torch.version.cuda,
         "cudnn": torch.backends.cudnn.version(),
-        "gpu": torch.cuda.get_device_name(0) if torch.cuda.is_available() else "cpu",
+        "gpu": _gpu_name(),
         "cuda_visible_devices": os.environ.get("CUDA_VISIBLE_DEVICES"),
     }
 
